@@ -48,7 +48,7 @@
         <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalLabel"></h5><a href="" download>ダウンロード</a>
+                    <h5 class="modal-title" id="modalLabel"></h5><a href="" >ダウンロード</a>
                 </div>
                 <div class="modal-body">
                     <div class="container-fluid" id="view">
@@ -72,7 +72,6 @@
   </body>
 <script>
 $(function(){
-	var href="";
 
 	/*
 	 *
@@ -81,15 +80,15 @@ $(function(){
 	$(document).on("show.bs.modal","#mdl_preview", function (event) {
 
 		//モーダルを呼び出すときに使われたボタンを取得し、hrefの値を取得
-		href = $(event.relatedTarget).attr('href');
+		let href = $(event.relatedTarget).attr('href');
 
 		// ファイル名をタイトルに表示
 		$("#mdl_preview h5").html(href.split("/").reverse()[0]);
 
 		// MIMEタイプの判定
-		var pos = href.lastIndexOf('.');
-		var exp = (pos === -1)?'':href.slice(pos + 1).toLowerCase();
-		var type = "text/html";
+		let pos = href.lastIndexOf('.');
+		let exp = (pos === -1)?'':href.slice(pos + 1).toLowerCase();
+		let type = "text/html";
 	    if (exp == "pdf") {
 	    	type = "application/pdf";
 	    } else if (exp == "png") {
@@ -110,7 +109,7 @@ $(function(){
 	    	type = "application/msexcel";
 	    }
 
- 		// object属性を追加
+ 		// object要素を追加
 	    $('div#view').append('<object data="'+href+'" type="'+type+'" style="max-height: 75vh;max-width: 100%;"><p>プレビューは表示できません。</p></object>');
 		// リンクにhrefをセット
 		$('.modal-header a').attr('href',href);
@@ -123,7 +122,7 @@ $(function(){
 
 	});
 	$(document).on("hide.bs.modal","#mdl_preview", function (event) {
- 		// object属性を削除
+ 		// object要素を削除
     	$('div#view object').remove();
 	});
 });
