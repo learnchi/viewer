@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <title>accordion</title>
+  </head>
+  <body>
+
+
+	<div class="container" >
+		<ul>
+    		<li>
+    			<a type="button" data-toggle="modal" data-target="#mdl_preview" href="files/strawberry-tart.pdf">
+    				ストロベリータルト（pdf）
+    			</a>
+    		</li>
+    		<li>
+        		<a type="button" data-toggle="modal" data-target="#mdl_preview" href="files/chocolate-parfait.pdf">
+        			チョコレートパフェ（pdf）
+        		</a>
+    		</li>
+    		<li>
+        		<a type="button" data-toggle="modal" data-target="#mdl_preview" href="files/pancake.pdf">
+        			パンケーキ（pdf）
+        		</a>
+    		</li>
+    		<li>
+        		<a type="button" data-toggle="modal" data-target="#mdl_preview" href="files/chiffoncake.png">
+        			シフォンケーキ（png）
+        		</a>
+    		</li>
+    		<li>
+        		<a type="button" data-toggle="modal" data-target="#mdl_preview" href="files/chocomint.png">
+        			チョコミントケーキ（png）
+        		</a>
+    		</li>
+		</ul>
+
+	</div><!-- class="container-fluid" -->
+
+    <!-- モーダル -->
+    <div class="modal fade bd-example-modal-xl" id="mdl_preview" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalLabel"></h5><a href="" download>ダウンロード</a>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid" id="view">
+<!--
+                        <object data="" type="text/html" style="max-height: 75vh;max-width: 100%;">
+                           <p>プレビューは表示できません。</p>
+                        </object>
+ -->
+                    </div>
+                </div> <!-- modal-body -->
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+<script>
+$(function(){
+	var href="";
+
+	/*
+	 *
+	 * modal画面表示時
+	 */
+	$(document).on("show.bs.modal","#mdl_preview", function (event) {
+
+		//モーダルを呼び出すときに使われたボタンを取得し、hrefの値を取得
+		href = $(event.relatedTarget).attr('href');
+
+		// ファイル名をタイトルに表示
+		$("#mdl_preview h5").html(href.split("/").reverse()[0]);
+
+		// MIMEタイプの判定
+		var pos = href.lastIndexOf('.');
+		var exp = (pos === -1)?'':href.slice(pos + 1).toLowerCase();
+		var type = "text/html";
+	    if (exp == "pdf") {
+	    	type = "application/pdf";
+	    } else if (exp == "png") {
+	    	type = "image/png";
+	    } else if (exp == "jpg" ||exp == "jpeg") {
+	    	type = "image/jpeg";
+	    } else if (exp == "gif") {
+	    	type = "image/gif";
+	    } else if (exp == "mid") {
+	    	type = "audio/midi";
+	    } else if (exp == "mpg") {
+	    	type = "video/mpeg";
+	    } else if (exp == "mp4") {
+	    	type = "video/mp4";
+	    } else if (exp == "qt" || exp == "mov") {
+	    	type = "video/quicktime";
+	    } else if (exp == "xls" || exp == "xlsx" || exp == "xlsm") {
+	    	type = "application/msexcel";
+	    }
+
+ 		// object属性を追加
+	    $('div#view').append('<object data="'+href+'" type="'+type+'" style="max-height: 75vh;max-width: 100%;"><p>プレビューは表示できません。</p></object>');
+		// リンクにhrefをセット
+		$('.modal-header a').attr('href',href);
+
+	    if (exp == "pdf") {
+	    	// 高さが150pxで固定されてしまうので、画面いっぱいにする
+	    	$('div#view object').css("min-height","75vh");
+	    	$('div#view object').css("width","100%");
+	    }
+
+	});
+	$(document).on("hide.bs.modal","#mdl_preview", function (event) {
+ 		// object属性を削除
+    	$('div#view object').remove();
+	});
+});
+</script>
+</html>
